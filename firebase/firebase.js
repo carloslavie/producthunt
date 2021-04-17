@@ -1,5 +1,7 @@
 import app from 'firebase/app';
-import 'firebase/auth'
+import 'firebase/auth'//autenticacion
+import 'firebase/firestore';//base de datos
+import 'firebase/storage'; //para utilizar el storage de firebase
 
 import firebaseConfig from './config';
 
@@ -11,6 +13,8 @@ class Firebase {
             app.initializeApp(firebaseConfig)
         }
         this.auth = app.auth();//para tener metodo de autenticacion en cualquier instancia que se necesite
+        this.db = app.firestore();//Hacemos referencia a db para acceder a la base de datos
+        this.storage = app.storage();
     }
     
     //Registra un usuario
@@ -21,7 +25,21 @@ class Firebase {
             displayName: nombre
         })
     }
+    
+    //Inicia sesion del usuario
+    async login(email, password) {
+        return this.auth.signInWithEmailAndPassword(email, password);
+    }
+
+    //Cierra la sesion del usuario
+    async cerrarSesion() {
+        await this.auth.signOut()
+    }
+
+
+
 }
+
 
 const firebase = new Firebase();
 export default firebase;

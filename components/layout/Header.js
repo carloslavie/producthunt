@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Link from 'next/link';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import Buscar from '../ui/Buscar';
 import Navegacion from './Navegacion';
 import Boton from '../ui/Boton';
+import { FirebaseContext } from '../../firebase';
 
 const ContendedorHeader = styled.div`
     max-width: 1200px;
@@ -24,11 +25,17 @@ const Logo = styled.p`
     font-weight:700;
     font-family:'Roboto Slab', serif;
     margin-right:2rem;
+
+    :hover{
+        cursor:pointer;
+    }
 `;
 
 const Header = () => {
 
-    const usuario = false;
+    const { usuario, firebase } = useContext(FirebaseContext);
+
+
     return (
         <header
             css={css`
@@ -67,9 +74,12 @@ const Header = () => {
                         css={css`
                             margin-right:2rem;
                         `}
-                    >Hola Carlitos</p>
+                    >Hola {usuario.displayName}</p>
 
-                    <Boton bgColor="true" type="button">Cerrar Sesión</Boton>                    
+                    <Boton 
+                    bgColor="true" 
+                    onClick={()=> firebase.cerrarSesion()}
+                    >Cerrar Sesión</Boton>                    
                     </>
                 ) : (
                     <>
